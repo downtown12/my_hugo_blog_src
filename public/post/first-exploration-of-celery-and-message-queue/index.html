@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>初探：Python Celery任务调度模块和消息队列</title>
+	<meta name="description" content="Example article description">
+	<meta name="generator" content="Hugo 0.40.2" />
+	
+	
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<script type="text/javascript" src="/js/scripts.js"></script>
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+</head>
+<body class="body body-right-sidebar">
+	<div class="container container-outer">
+		<header class="header">
+			<div class="container container-inner">
+				<div class="logo" role="banner">
+					<a class="logo__link" href="/" title="FgetDaPain" rel="home">
+						<div class="logo__title">FgetDaPain</div>
+						<div class="logo__tagline">技术与生活</div>
+					</a>
+				</div>
+			</div>
+			<div class="divider"></div>
+
+		</header>
+		<div class="wrapper clearfix">
+
+
+<main class="main content">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">初探：Python Celery任务调度模块和消息队列</h1><div class="post__meta meta">
+<svg class="icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+<time class="post__meta-date meta-date" datetime="2018-05-10T20:14:36">May 10, 2018</time>
+<span class="post__meta-categories meta-categories">
+	<svg class="icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta-categories__list"><a class="meta-categories__link" href="/categories/%e5%bc%80%e5%8f%91" rel="category">开发</a></span>
+</span></div>
+		</header>
+		<div class="post__content clearfix">
+			
+
+<p>近期由于工作需要，要开发一套类似扫描器的工具，并将它的扫描工作作为服务提供给多个用户使用。每个用户可以下发扫描任务，最终查看扫描结果。为了实现调度多个用户下发的扫描任务。我想到需要写一个同步或异步的任务调度模块，并要将用户下发的任务放进队列里，依次（同步）或并发（异步）处理。同时，队列里的任务要存放在缓存（或本地磁盘）中，以免任务信息丢失。
+&gt;为了实现这几个功能，上网查了些资料，发现消息队列技术刚好可以完成这项工作。因此也就不需要自己研发这个模块了。刚好前不久也被<a href="http://www.lijiejie.com/">lijiejie</a>大牛问到了类似的问题。之前没有接触过。正好学了一下，发现使用现成的任务调度模块（Celery）以及消息队列（RabbitMQ或Redis）来实现文章一开始所说的任务调度功能，其实很简单。</p>
+
+<h2 id="参考连接">参考连接</h2>
+
+<ol>
+<li><a href="https://www.liaoxuefeng.com/article/00137760323922531a8582c08814fb09e9930cede45e3cc000">任务调度利器：Celery (廖雪峰)</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-celery-web-service/index.html">利用 Celery 构建 Web 服务的后台任务调度模块(ibm-developworks)</a></li>
+</ol>
+
+<h2 id="celery是什么">Celery是什么</h2>
+
+<blockquote>
+<p>Celery是Python开发的分布式任务调度模块，接口简单，开发容易
+Celery本身不含消息服务，它使用第三方消息服务来传递任务，目前，Celery支持的消息服务有RabbitMQ、Redis甚至是数据库。</p>
+</blockquote>
+
+<p>对与我目前需求比较简单的情况，当然Redis应该是最佳选择。后续随着需求复杂，可以考虑使用RabbitMQ（分布式集群的消息队列）</p>
+
+<p>前边几段提到了RabbitMQ和Redis, 这两个东西在任务调度里的作用是什么呢？
+答案是，他们提供了消息队列服务。
+简单来讲，它提供了任务存放的位置和存取方式。这样，在任务处理模块有空闲的时候，就从队列里取出一个任务来执行，执行完了（或中场休息）再取出另外一个。
+消息队列在任务下发者（生产者）和任务处理者（消费者）之间提供了沟通的桥梁。</p>
+
+<h2 id="消息队列的三个重要组件">消息队列的三个重要组件</h2>
+
+<ul>
+<li>Producer（客户端）</li>
+<li>Broker（中间人）</li>
+<li>Worker（职程）</li>
+</ul>
+
+<p>消息队列的输入是工作的一个单元，称为任务，独立的<strong>职程（Worker）</strong>进程持续监视队列中是否有需要处理的新任务。
+Celery 用消息通信，通常使用<strong>中间人（Broker）</strong>在<strong>客户端</strong>和<strong>职程</strong>间斡旋。这个过程从客户端向队列添加消息开始，之后中间人把消息派送给职程。</p>
+
+<h2 id="broker的选择-redis还是rabbitmq">Broker的选择：Redis还是RabbitMQ</h2>
+
+<p>简单描述如下：</p>
+
+<p><strong>Redis</strong>属轻量级消息队列，支持功能不多，不支持持久化任务。</p>
+
+<p><strong>RabbitMQ</strong>属重量级消息队列，支持持久化任务。</p>
+
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 16 16"><path d="M16 9.5c0 .373-.24.74-.5 1l-5 5c-.275.26-.634.5-1 .5-.373 0-.74-.24-1-.5L1 8a2.853 2.853 0 0 1-.7-1C.113 6.55 0 5.973 0 5.6V1.4C0 1.034.134.669.401.401.67.134 1.034 0 1.4 0h4.2c.373 0 .95.113 1.4.3.45.187.732.432 1 .7l7.5 7.502c.26.274.5.632.5.998zM3.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/python/" rel="tag">Python</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6/" rel="tag">任务调度</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%E6%B6%88%E6%81%AF%E5%AF%B9%E5%88%97/" rel="tag">消息对列</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/mq/" rel="tag">MQ</a></li>
+	</ul>
+</div>
+	</article>
+	
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About FgetDaPain</span>
+	</div>
+	<div class="authorbox__description">
+		A Pythoner, Penetration Tester. 一个热爱学习的人.
+	</div>
+</div>
+	
+<nav class="post-nav row clearfix">
+	<div class="post-nav__item post-nav__item--prev col-1-2">
+		<a class="post-nav__link" href="/post/how-to-build-this-personal-blog-using-hugo/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">我是如何用Hugo搭建这个个人博客的</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next col-1-2">
+		<a class="post-nav__link" href="/post/management-of-vulnerability-lifetime-in-a-bank/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">银行业的漏洞生命周期管理流程</p></a>
+	</div>
+</nav>
+	
+</main>
+
+<aside class="sidebar">
+	
+<div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="https://fgetdapain.github.io/" />
+	</form>
+</div>
+	
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/management-of-vulnerability-lifetime-in-a-bank/">银行业的漏洞生命周期管理流程</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/first-exploration-of-celery-and-message-queue/">初探：Python Celery任务调度模块和消息队列</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/how-to-build-this-personal-blog-using-hugo/">我是如何用Hugo搭建这个个人博客的</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%bc%80%e5%8f%91">开发</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e6%8a%80%e6%9c%af">技术</a></li>
+		</ul>
+	</div>
+</div>
+	
+	
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/hugo" title="Hugo">Hugo</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/mq" title="Mq">Mq</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/python" title="Python">Python</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/%e4%bb%bb%e5%8a%a1%e8%b0%83%e5%ba%a6" title="任务调度">任务调度</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/%e5%ae%89%e5%85%a8%e7%ae%a1%e7%90%86" title="安全管理">安全管理</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/%e6%b6%88%e6%81%af%e5%af%b9%e5%88%97" title="消息对列">消息对列</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/%e7%bd%91%e7%ab%99%e8%bf%90%e7%bb%b4" title="网站运维">网站运维</a>
+	</div>
+</div>
+</aside>
+	</div>
+		<footer class="footer">
+			<div class="container container-inner">
+				<div class="footer__copyright">&copy; 2018 FgetDaPain. <span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span></div>
+			</div>
+		</footer>
+	</div>
+
+<script>
+	var navigation = responsiveNav(".menu", {
+		navClass: "menu--collapse",
+	});
+</script>
+</body>
+</html>

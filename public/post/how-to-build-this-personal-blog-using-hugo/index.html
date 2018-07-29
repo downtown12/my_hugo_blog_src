@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>我是如何用Hugo搭建这个个人博客的</title>
+	<meta name="description" content="Example article description">
+	<meta name="generator" content="Hugo 0.40.2" />
+	
+	
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<script type="text/javascript" src="/js/scripts.js"></script>
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+</head>
+<body class="body body-right-sidebar">
+	<div class="container container-outer">
+		<header class="header">
+			<div class="container container-inner">
+				<div class="logo" role="banner">
+					<a class="logo__link" href="/" title="FgetDaPain" rel="home">
+						<div class="logo__title">FgetDaPain</div>
+						<div class="logo__tagline">技术与生活</div>
+					</a>
+				</div>
+			</div>
+			<div class="divider"></div>
+
+		</header>
+		<div class="wrapper clearfix">
+
+
+<main class="main content">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">我是如何用Hugo搭建这个个人博客的</h1><div class="post__meta meta">
+<svg class="icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+<time class="post__meta-date meta-date" datetime="2018-05-05T11:40:56">May 05, 2018</time>
+<span class="post__meta-categories meta-categories">
+	<svg class="icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta-categories__list"><a class="meta-categories__link" href="/categories/%e6%8a%80%e6%9c%af" rel="category">技术</a></span>
+</span></div>
+		</header>
+		<div class="post__content clearfix">
+			
+
+<h2 id="参考链接">参考链接：</h2>
+
+<ol>
+<li><a href="http://www.gohugo.org/post/coderzh-hugo/">使用hugo搭建个人博客站点</a>;</li>
+<li><a href="https://themes.gohugo.io/mainroad/">Hugo Mainroad 主题</a>;</li>
+<li><a href="https://gohugo.io/documentation/">Hugo Docs</a>;</li>
+</ol>
+
+<h2 id="hugo是啥">Hugo是啥</h2>
+
+<blockquote>
+<p>Hugo是一个用Go语言编写的静态网站生成器
+Hugo很适合用来搭建个人博客，且它的官方网站上有很多的博客主题，可以下载直接使用</p>
+</blockquote>
+
+<h3 id="静态网站生成器">静态网站生成器</h3>
+
+<p>这里直接摘抄<a href="https://blog.coderzh.com/about/">CoderZh</a>大牛对于静态网站生成器的说明：</p>
+
+<blockquote>
+<p>什么是静态网站生成器？如果追溯到最早的网站形式，那时候的网页都是静态的，即一个内容不变的html文件放在服务器上，人们通过互联网访问浏览的都是这个一成不变的页面。后来，人们发现，需要和网页进行交互，能根据用户的输入动态呈现出相应的内容，这就是动态网站。那，为什么现在又回归使用静态网站呢？特别是对于博客网站这种特殊的形式。我的理解是：</p>
+
+<p>访问速度提升。静态页面不需要像动态页面那样经常去查询数据库，而是直接将最终页面内容返回。
+搜素引擎友好。便于搜索引擎索引，比如很多动态网站的页面地址是一样的，只是后面传入的参数不一样，容易让搜索引擎误认为是同一个页面。（虽然不会）
+可以完全抛弃数据库，减少复杂度，将最复杂的一步交给静态网站生成器，自己只专注写作、生成、发布三个步骤。
+博客文章可以以文本文件的方式（MarkDown）在本地维护管理，不需要像之前那样在网页的编辑器里提交到网站数据库。你可以方便的使用github管理你的博客文章，不会丢失，又能追溯到每一次的内容变更。
+目前最流行的静态网站生成器是Jekyll，它是github创始人自己实现的一套ruby的静态网站生成器。一经推出，各个程序哥竞相效仿，一时间使用Jekyll搭建自己的博客变成了一件很高逼格的事情。</p>
+</blockquote>
+
+<h3 id="为什么不用mvc架构来搭建博客">为什么不用MVC架构来搭建博客</h3>
+
+<p>一开始我是打算用MVC架构搭建博客的,但是有一个痛点让我无法这样做：我需要很快搭起一个博客（大概1-2天时间），如果我用Python自己开发前后端，后端还好，但前端和数据库表结构设计目前我是不擅长的，这可能需要花掉我一个月的时间，且最终我也不能保证它能搭得很好。
+且我目前的需求只是需要别人能看到我发布的内容（主要是技术随笔）即可。暂时不需要评论这些复杂的需求。这样一来，带有数据库的博客系统对我来说，就过于臃肿了。我也可以采用现成的Wordpress，很快部署好这种博客，但我不想这么做（主要还是对Wordpress的安全状况不信任）。
+Hugo以前我也听说过，但当时我不知道他具体是什么，直到我真的要开始做这件事。开始研究网上大家推荐的各类博客的特性时，我觉得Hugo还不错，能满足我的需求，且没有数据库使他能很快地响应。我喜欢简单的东西。这些构成了我选择它的理由。</p>
+
+<h3 id="hugo以外的一些其它的静态网站生成器">Hugo以外的一些其它的静态网站生成器</h3>
+
+<ol>
+<li>Jekyll: ruby写的；</li>
+<li>Hexo: Node.js写的；</li>
+<li>Pelican: Python写的，使用Jinja2渲染模版；</li>
+<li>&hellip;</li>
+</ol>
+
+<h2 id="搭建步骤">搭建步骤</h2>
+
+<ol>
+<li>首先安装好Hugo。Hugo仅仅由一个二进制文件构成，可以在官网下载它的二进制包（我用的Ubuntu上是deb），然后用软件包管理器安装即可。</li>
+<li>使用hugo new site yoursitename 命令，在当前目录下，新建一个博客网站目录，把yoursitename改为你喜欢的名字。</li>
+<li>下载一个能用的主题（为什么说是“能用的”，下边会解释）</li>
+<li>用md写博客。</li>
+<li>最后在VPS上部署你的博客，大功告成。</li>
+</ol>
+
+<p>搭建步骤其实很简单，但是中间会遇到很多坑，主要是在使用下载好的主题（theme）时，外国人开发的主题有时会加载很多Google的东西，例如统计功能和字体，这时我们的博客页面就很容易无法完全加载（墙的原因），导致页面会很难看。</p>
+
+<p>主题theme选型是个坑：
+主要是因为墙的原因，如果所选用的主题里包含了google analytics或者来自googleapis的css样式文件，就会出现页面无法加载的问题</p>
+
+<p>我遇到的主要是加载字体文件时，字体文件来自于googleapis.com，这时需要翻墙将字体文件下载到本地，再从本地加载字体样式才行。</p>
+
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 16 16"><path d="M16 9.5c0 .373-.24.74-.5 1l-5 5c-.275.26-.634.5-1 .5-.373 0-.74-.24-1-.5L1 8a2.853 2.853 0 0 1-.7-1C.113 6.55 0 5.973 0 5.6V1.4C0 1.034.134.669.401.401.67.134 1.034 0 1.4 0h4.2c.373 0 .95.113 1.4.3.45.187.732.432 1 .7l7.5 7.502c.26.274.5.632.5.998zM3.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/hugo/" rel="tag">Hugo</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%E7%BD%91%E7%AB%99%E8%BF%90%E7%BB%B4/" rel="tag">网站运维</a></li>
+	</ul>
+</div>
+	</article>
+	
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About FgetDaPain</span>
+	</div>
+	<div class="authorbox__description">
+		A Pythoner, Penetration Tester. 一个热爱学习的人.
+	</div>
+</div>
+	
+<nav class="post-nav row clearfix">
+	<div class="post-nav__item post-nav__item--next col-1-2">
+		<a class="post-nav__link" href="/post/first-exploration-of-celery-and-message-queue/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">初探：Python Celery任务调度模块和消息队列</p></a>
+	</div>
+</nav>
+	
+</main>
+
+<aside class="sidebar">
+	
+<div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="https://fgetdapain.github.io/" />
+	</form>
+</div>
+	
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/management-of-vulnerability-lifetime-in-a-bank/">银行业的漏洞生命周期管理流程</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/first-exploration-of-celery-and-message-queue/">初探：Python Celery任务调度模块和消息队列</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/how-to-build-this-personal-blog-using-hugo/">我是如何用Hugo搭建这个个人博客的</a></li>
+		</ul>
+	</div>
+</div>
+	
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%bc%80%e5%8f%91">开发</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e6%8a%80%e6%9c%af">技术</a></li>
+		</ul>
+	</div>
+</div>
+	
+	
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/hugo" title="Hugo">Hugo</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/mq" title="Mq">Mq</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/python" title="Python">Python</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/%e4%bb%bb%e5%8a%a1%e8%b0%83%e5%ba%a6" title="任务调度">任务调度</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/%e5%ae%89%e5%85%a8%e7%ae%a1%e7%90%86" title="安全管理">安全管理</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/%e6%b6%88%e6%81%af%e5%af%b9%e5%88%97" title="消息对列">消息对列</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/%e7%bd%91%e7%ab%99%e8%bf%90%e7%bb%b4" title="网站运维">网站运维</a>
+	</div>
+</div>
+</aside>
+	</div>
+		<footer class="footer">
+			<div class="container container-inner">
+				<div class="footer__copyright">&copy; 2018 FgetDaPain. <span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span></div>
+			</div>
+		</footer>
+	</div>
+
+<script>
+	var navigation = responsiveNav(".menu", {
+		navClass: "menu--collapse",
+	});
+</script>
+</body>
+</html>
