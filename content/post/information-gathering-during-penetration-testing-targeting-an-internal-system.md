@@ -2,7 +2,7 @@
 title: "随笔: 一次渗透演习过程中的信息收集工作"
 subtitle: "Information Gathering During Penetration Testing Targeting an Internal System"
 date: 2018-07-29T17:46:27+08:00
-draft: true
+draft: false
 categories:
   - "安全"
 tags:
