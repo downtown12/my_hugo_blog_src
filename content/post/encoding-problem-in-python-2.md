@@ -8,7 +8,11 @@ tags:
   - "Python"
 ---
 
-python 2神坑之字符编码 -- HTTP POST文件场景
+Python 2神坑之字符编码
+==========
+
+
+
 
 ## 先来说一下Python 2 的编码坑
 
