@@ -1,4 +1,4 @@
-baseURL = "https://fgetdapain.github.io/"
+baseURL = "/"
 languageCode = "zh-CN"
 title = "FgetDaPain"
 theme = "Mainroad" # set the theme
@@ -16,8 +16,12 @@ paginate = "10" # Number of posts per page
     opengraph = false # Enable OpenGraph if true
     twitter_cards = false # Enable Twitter Cards if true
     readmore = false # Show "Read more" button in list if true
+    homeLayout = "content + sidebar" # Configure home page layout
+    listLayout = "content + sidebar" # Configure layout for list pages
+    singleLayout = "content + sidebar" # Configure layout for single pages
     leftsidebar = false # Move sidebar to the left side if true
     authorbox = true # Show authorbox at bottom of pages if true
+    toc = true # Enable Table of Contents
     post_navigation = true # Show post navigation at bottom of pages if true
     postSections = ["post"] # the section pages to show on home page and the "Recent articles" widget
     #postSections = ["blog", "news"] # alternative that shows more than one section's pages
@@ -31,14 +35,14 @@ paginate = "10" # Number of posts per page
   tags = true # Enable "Tags" widget
   tags_counter = false # Enable counter for each tag in "Tags" widget (disabled by default)
 
-  # # Enable "Social" widget, if any of "social_*" set a value
-  # social_facebook = "username"
-  # social_twitter = "username"
-  # social_linkedin = "username"
-  # social_telegram = "username"
-  # social_github = "username"
-  # social_email = "example@example.com"
-  # social_google_plus = "profileid"
+  # Enable "Social" widget, if any of "social_*" set a value
+  #social_facebook = "username"
+  #social_twitter = "username"
+  #social_linkedin = "username"
+  #social_telegram = "username"
+  social_github = "downtown12"
+  social_email = "imwjt@163.com"
+  #social_google_plus = "profileid"
 
 #theme = "coder"
 ## Social links
