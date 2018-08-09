@@ -1,7 +1,7 @@
 baseURL = "https://fgetdapain.github.io/"
 languageCode = "zh-CN"
 title = "FgetDaPain"
-theme = "mainroad" # set the theme
+theme = "Mainroad" # set the theme
 paginate = "10" # Number of posts per page
 
 
@@ -24,27 +24,22 @@ paginate = "10" # Number of posts per page
     #dateformat = "2006-01-02" # change the format of dates
 
 [Params.widgets]
-    search = true # Enable "Search" widget
-    recent_articles = true # Enable "Recent articles" widget
-    recent_articles_num = 5 # Set the number of articles in the "Recent articles" widget
-    categories = true # Enable "Categories" widget
-    tags = true # Enable "Tags" widget
-    tags_counter = false # Enable counter for each tag in "Tags" widget (disabled by default)
+  search = true # Enable "Search" widget
+  recent_articles = true # Enable "Recent articles" widget
+  recent_articles_num = 5 # Set the number of articles in the "Recent articles" widget
+  categories = true # Enable "Categories" widget
+  tags = true # Enable "Tags" widget
+  tags_counter = false # Enable counter for each tag in "Tags" widget (disabled by default)
 
-    # Enable "Social" widget, if any of "social_*" set a value
-    #social_facebook = "username"
-    #social_twitter = "username"
-    #social_linkedin = "username"
-    #social_github = "username"
-    #social_email = "example@example.com"
-    #social_google_plus = "profileid"
+  # # Enable "Social" widget, if any of "social_*" set a value
+  # social_facebook = "username"
+  # social_twitter = "username"
+  # social_linkedin = "username"
+  # social_telegram = "username"
+  # social_github = "username"
+  # social_email = "example@example.com"
+  # social_google_plus = "profileid"
 
-[params] # theme parameters
-    author = "FgetDaPain" # author's name
-    info = "Pythoner and Penetration Tester" # author's job title or info
-    description = "FgetDaPain's personal website" # site description
-    keywords = "blog,developer,personal" # site keywords
-    
 #theme = "coder"
 ## Social links
 #[[params.social]]
