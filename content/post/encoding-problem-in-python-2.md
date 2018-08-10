@@ -1,5 +1,5 @@
 ---
-title: "Encoding Problem in Python 2"
+title: "The Encoding Problem in Python 2"
 date: 2018-08-06T23:15:46+08:00
 draft: false
 categories:
