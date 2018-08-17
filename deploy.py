@@ -14,7 +14,7 @@ __author__ = 'fgetdapain'
 
 GIT_REPO = [
     # [别名,   分支名,     Git Repo 路径]
-    ['origin',  'gh-pages', 'git@github.com:downtown12/downtown12.github.io.git'],
+    ['origin',  'master', 'git@github.com:downtown12/downtown12.github.io.git'],
     #['coding',  'gh-pages', 'git@git.coding.net:coderzh/hugo-blog-deployed.git'],
 ]
 
