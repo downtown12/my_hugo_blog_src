@@ -19,6 +19,8 @@ GIT_REPO = [
 ]
 
 DEPLOY_DIR = 'gh-pages'
+DEPLOY_ABS_DIR = '/var/www/myblog'
+USE_ABS_DEPLOY_DIR = True
 
 
 class ChDir:
@@ -61,7 +63,10 @@ def deploy(args):
         # step2 build
         subprocess.call('hugo -v --cacheDir="./cache"', shell=True)
 
-    deploy_dir = os.path.join(parent_dir, DEPLOY_DIR)
+    if USE_ABS_DEPLOY_DIR: 
+        deploy_dir = os.path.abspath(DEPLOY_ABS_DIR)
+    else:
+        deploy_dir = os.path.join(parent_dir, DEPLOY_DIR)
 
     # step3 clone if not exists
     if not os.path.exists(deploy_dir):
