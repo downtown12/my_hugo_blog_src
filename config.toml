@@ -1,7 +1,7 @@
 baseURL = "/"
 languageCode = "zh-CN"
 title = "FgetDaPain"
-theme = "Mainroad" # set the theme
+theme = "mainroad" # set the theme
 paginate = "10" # Number of posts per page
 hasCJKLanguage = true # auto-detect Chinese/Japanese/Korean Languages in the content. Make .Summary and .WordCount behave correctly for CJK languages.
 
